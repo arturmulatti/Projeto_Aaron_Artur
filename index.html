@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PokéBomber - Trabalho Final</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- TELA 1: MENU INICIAL E SELEÇÃO DE PERSONAGEM (API) -->
+  <section id="menu-screen" class="screen active">
+    <h1>PokéBomber</h1>
+
+    <div class="card">
+      <label for="player-name">Nome do Jogador:</label>
+      <input type="text" id="player-name" placeholder="Ex: Artur" maxlength="20" />
+
+      <label for="pokemon-input">Escolha seu Pokémon (nome ou ID da PokéAPI):</label>
+      <div class="row">
+        <input type="text" id="pokemon-input" value="pikachu" placeholder="Ex: charmander, 25..." />
+        <button type="button" id="btn-fetch-pokemon">Buscar</button>
+      </div>
+
+      <div id="pokemon-preview" class="preview-box">
+        <p id="pokemon-status">Carregando personagem...</p>
+        <img id="pokemon-sprite" src="" alt="Sprite do Pokémon" hidden />
+        <div id="pokemon-info"></div>
+      </div>
+
+      <div class="actions">
+        <button type="button" id="btn-start-game">Iniciar Partida</button>
+        <button type="button" id="btn-open-ranking" class="secondary">Ver Ranking (CRUD)</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TELA 2: JOGO PRINCIPAL -->
+  <section id="game-screen" class="screen">
+    <header class="hud">
+      <span>Jogador: <strong id="hud-player">-</strong></span>
+      <span>Pontos: <strong id="hud-score">0</strong></span>
+      <span>Bônus: <strong id="hud-bonus">-</strong></span>
+      <button type="button" id="btn-exit-game" class="secondary">Sair / Salvar</button>
+    </header>
+
+    <canvas id="game-canvas" width="720" height="624"></canvas>
+    <p class="controls-hint">Controles: <strong>WASD</strong> ou <strong>Setas</strong> para mover | <strong>Espaço</strong> para plantar bomba</p>
+  </section>
+
+  <!-- TELA 3: RANKING E GERENCIAMENTO DE PERFIS (CRUD LOCALSTORAGE) -->
+  <section id="ranking-screen" class="screen">
+    <h2>Ranking &amp; Perfis Salvos</h2>
+
+    <!-- CREATE manual no CRUD -->
+    <form id="crud-create-form" class="card row">
+      <input type="text" id="crud-name" placeholder="Nome do jogador" required maxlength="20" />
+      <input type="number" id="crud-score" placeholder="Pontuação" required min="0" />
+      <button type="submit">Adicionar Registro</button>
+    </form>
+
+    <!-- READ / UPDATE / DELETE -->
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Avatar</th>
+            <th>Jogador</th>
+            <th>Pokémon</th>
+            <th>Pontos</th>
+            <th>Ações (Update / Delete)</th>
+          </tr>
+        </thead>
+        <tbody id="ranking-tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="actions">
+      <button type="button" id="btn-back-menu">Voltar ao Menu</button>
+      <button type="button" id="btn-clear-ranking" class="danger">Limpar Tudo</button>
+    </div>
+  </section>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>

@@ -1,18 +1,20 @@
-import { fetchPokemonCharacter } from "api.js";
+import { fetchPokemonCharacter } from "./api.js";
 import {
   getAllRecords,
   createRecord,
   updateRecord,
   deleteRecord,
-  clearAllRecords
-} from "storage.js";
-import { createFreshMap } from "map.js";
+  clearAllRecords,
+} from "./storage.js";
+import { createFreshMap } from "./map.js";
 
 let selectedCharacter = null;
 
 // Alternância de telas via classe CSS (.active -> display: block | padrão -> display: none)
 function showScreen(screenId) {
-  document.querySelectorAll(".screen").forEach((el) => el.classList.remove("active"));
+  document
+    .querySelectorAll(".screen")
+    .forEach((el) => el.classList.remove("active"));
   document.getElementById(screenId).classList.add("active");
 }
 
@@ -63,25 +65,33 @@ function renderRankingTable() {
           <button type="button" class="danger" data-action="delete" data-id="${rec.id}">Excluir</button>
         </td>
       </tr>
-    `
+    `,
     )
     .join("");
 }
 
 // --- EVENTOS DE NAVEGAÇÃO E CRUD ---
-document.getElementById("btn-fetch-pokemon").addEventListener("click", handleSearchPokemon);
+document
+  .getElementById("btn-fetch-pokemon")
+  .addEventListener("click", handleSearchPokemon);
 
 document.getElementById("btn-start-game").addEventListener("click", () => {
-  const playerName = document.getElementById("player-name").value.trim() || "Jogador 1";
+  const playerName =
+    document.getElementById("player-name").value.trim() || "Jogador 1";
   const currentMap = createFreshMap();
 
   document.getElementById("hud-player").textContent = playerName;
-  document.getElementById("hud-bonus").textContent = selectedCharacter?.bonus.label || "Padrão";
+  document.getElementById("hud-bonus").textContent =
+    selectedCharacter?.bonus.label || "Padrão";
 
   showScreen("game-screen");
 
   // Ponto de integração com o motor do jogo (game.js):
-  console.log("Iniciar loop do Canvas com:", { playerName, selectedCharacter, currentMap });
+  console.log("Iniciar loop do Canvas com:", {
+    playerName,
+    selectedCharacter,
+    currentMap,
+  });
 });
 
 document.getElementById("btn-open-ranking").addEventListener("click", () => {
@@ -102,29 +112,31 @@ document.getElementById("btn-exit-game").addEventListener("click", () => {
     playerName,
     pokemonName: selectedCharacter?.name || "Pikachu",
     pokemonSprite: selectedCharacter?.sprite || "",
-    score
+    score,
   });
 
   renderRankingTable();
   showScreen("ranking-screen");
 });
 
-document.getElementById("crud-create-form").addEventListener("submit", (event) => {
-  event.preventDefault();
-  const nameInput = document.getElementById("crud-name");
-  const scoreInput = document.getElementById("crud-score");
+document
+  .getElementById("crud-create-form")
+  .addEventListener("submit", (event) => {
+    event.preventDefault();
+    const nameInput = document.getElementById("crud-name");
+    const scoreInput = document.getElementById("crud-score");
 
-  createRecord({
-    playerName: nameInput.value,
-    pokemonName: selectedCharacter?.name || "Pikachu",
-    pokemonSprite: selectedCharacter?.sprite || "",
-    score: Number(scoreInput.value)
+    createRecord({
+      playerName: nameInput.value,
+      pokemonName: selectedCharacter?.name || "Pikachu",
+      pokemonSprite: selectedCharacter?.sprite || "",
+      score: Number(scoreInput.value),
+    });
+
+    nameInput.value = "";
+    scoreInput.value = "";
+    renderRankingTable();
   });
-
-  nameInput.value = "";
-  scoreInput.value = "";
-  renderRankingTable();
-});
 
 document.getElementById("ranking-tbody").addEventListener("click", (event) => {
   const btn = event.target.closest("button");
